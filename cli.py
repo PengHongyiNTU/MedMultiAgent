@@ -83,7 +83,7 @@ class CliApp:
 
         async def prompt_loop():
             while True:
-                self.system.send_message("Enter your questions or comma/nds:")
+                self.system.send_message("Enter your questions or commands:")
                 message = input(
                     ">>> ",
                 ).strip()  # Using plain input to get user input
