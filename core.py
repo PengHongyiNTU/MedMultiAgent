@@ -6,7 +6,8 @@ from langchain_core.messages import HumanMessage
 
 
 
-# This is just for testing purposes
+# Just for testing
+# Not the final version
 class Coordinator:
     def __init__(self) -> None:
         try:
