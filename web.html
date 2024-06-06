@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mermaid Chart Example</title>
+    <!-- Include Mermaid -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <style>
+        .mermaid {
+            margin: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mermaid Chart Example</h1>
+    <div class="mermaid">
+        %%{init: {'flowchart': {'curve': 'linear'}}}%%\ngraph TD;\n\tPromptInput[PromptInput]:::startclass;\n\tChatPromptTemplate([ChatPromptTemplate]):::otherclass;\n\tChatOllama([ChatOllama]):::otherclass;\n\tJsonOutputParser([JsonOutputParser]):::otherclass;\n\tJsonOutputParserOutput[JsonOutputParserOutput]:::endclass;\n\tPromptInput --> ChatPromptTemplate;\n\tChatPromptTemplate --> ChatOllama;\n\tJsonOutputParser --> JsonOutputParserOutput;\n\tChatOllama --> JsonOutputParser;\n\tclassDef startclass fill:#ffdfba;\n\tclassDef endclass fill:#baffc9;\n\tclassDef otherclass fill:#fad7de;\n
+    </div>
+</body>
+</html>
+
+
+
+
+<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+</script>
+<div class="mermaid">
+    %%{init: {'flowchart': {'curve': 'linear'}}}%%
+    graph TD;
+        PromptInput[PromptInput]:::startclass;
+        ChatPromptTemplate([ChatPromptTemplate]):::otherclass;
+        ChatOllama([ChatOllama]):::otherclass;
+        JsonOutputParser([JsonOutputParser]):::otherclass;
+        JsonOutputParserOutput[JsonOutputParserOutput]:::endclass;
+        PromptInput --> ChatPromptTemplate;
+        ChatPromptTemplate --> ChatOllama;
+        ChatOllama --> JsonOutputParser;
+        JsonOutputParser --> JsonOutputParserOutput;
+        classDef startclass fill:#ffdfba;
+        classDef endclass fill:#baffc9;
+        classDef otherclass fill:#fad7de;
+</div>
