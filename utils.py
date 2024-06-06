@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from typing import Tuple, Type
 from langchain_core.pydantic_v1 import BaseModel
 from langchain_core.output_parsers import JsonOutputParser
@@ -14,7 +15,7 @@ def auto_schema_prompt(
         basemodel (BaseModel): The Pydantic BaseModel defining the schema.
 
     Returns:
-        Tuple[str, BaseOutputParse]: The generated schema prompt and 
+        Tuple[str, BaseOutputParse]: The generated schema prompt and
         the output parser.
     """
     parser = JsonOutputParser(pydantic_object=basemodel)

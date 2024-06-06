@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import typer
 from cli import CliApp
 from web import WebApp
@@ -16,7 +17,6 @@ def initialize_session_state(at: Literal["web", "cli"]) -> None:
         state = State(at)
 
 
-
 @entry_point.command(help="Start the CLI application.")
 def cli() -> None:
     initialize_session_state("cli")
@@ -27,8 +27,11 @@ def cli() -> None:
 @entry_point.command(help="Start the Web application on the specified port.")
 def web(
     port: int = Option(
-        8000, "--port", "-p", help="Port number for the web application"
-    )
+        8000,
+        "--port",
+        "-p",
+        help="Port number for the web application",
+    ),
 ) -> None:
     initialize_session_state("web")
     web_app = WebApp(port)

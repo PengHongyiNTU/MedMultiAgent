@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
+
 with st.sidebar:
     environment_variable = st.text_input(
-        "Enter your environment variable", key="environment_variable"
+        "Enter your environment variable",
+        key="environment_variable",
     )
 
 st.title("Medical Multi Agent")
@@ -9,7 +12,7 @@ st.caption(":copyright: Nanyang Technological University")
 
 if "messages" not in st.session_state:
     st.session_state["messages"] = [
-        {"role": "assistant", "message": "Hello! How can I help you today?"}
+        {"role": "assistant", "message": "Hello! How can I help you today?"},
     ]
 
 for msg in st.session_state.messages:

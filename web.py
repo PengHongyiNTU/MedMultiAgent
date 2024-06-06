@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from loguru import logger
 import subprocess
 
@@ -15,7 +16,3 @@ class WebApp:
         except KeyboardInterrupt:
             logger.info("Web application stopped by user")
             process.terminate()
-
-            
-
-

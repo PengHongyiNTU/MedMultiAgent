@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from abc import ABC, abstractmethod
 from os import system
 from langchain_core.runnables import RunnableLambda, Runnable
@@ -8,13 +9,13 @@ from langchain_core.messages import HumanMessage
 from utils import auto_schema_prompt
 from langchain_openai import ChatOpenAI
 
+
 class Workflow(ABC):
     description: str
 
     @abstractmethod
     def get_runnable(self) -> Runnable:
         pass
-
 
 
 # Function as a workflow
@@ -46,22 +47,22 @@ class ConsultCodellama(Workflow):
         self.prompt_template = ChatPromptTemplate.from_messages(
             [
                 (
-                "system",
-                """You are a AI assitant
+                    "system",
+                    """You are a AI assitant
                  with expertise in code review.\n
                  You will be given a code snippet and you
                  should provide your feedback and rating on the code. \n
                  {output_prompt} \n""",
                 ),
                 ("user", "{code_snippet} \n"),
-            ]
+            ],
         )
         try:
             self.llm = self.llm.with_structured_output(CodeFeedback)
         except NotImplementedError:
             output_prompt, output_parser = auto_schema_prompt(CodeFeedback)
             self.prompt_template = self.prompt_template.partial(
-                output_prompt=output_prompt
+                output_prompt=output_prompt,
             )
             self.llm = self.llm | output_parser
         self.description = """Consult Codellama for code review.\n
@@ -72,23 +73,24 @@ class ConsultCodellama(Workflow):
         return self.prompt_template | self.llm
 
 
-
 class ConsultOpenAIGPT4(Workflow):
     def __init__(self):
         self.llm = ChatOpenAI(model="gpt-4-turbo")
-        self.description = """Consult the most intelligent 
+        self.description = """Consult the most intelligent
                               AI model GPT-4 for your questions.\n"""
         from langchain_core.output_parsers import StrOutputParser
+
         self.prompt = ChatPromptTemplate.from_messages(
-            messages=[HumanMessage(content="{userinput}")])
+            messages=[HumanMessage(content="{userinput}")],
+        )
         self.runnable = self.llm | StrOutputParser()
-        
+
     def get_runnable(self):
         return self.runnable
 
 
 # Langgraph as a workflow
-# To be implemented 
+# To be implemented
 if __name__ == "__main__":
     print(issubclass(Magic, Workflow))
     print(issubclass(ConsultCodellama, Workflow))

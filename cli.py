@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 
-from typing import  AsyncIterator, Dict, Any, Union
+from typing import AsyncIterator, Dict, Any, Union
 import re
 from rich.console import Console
 from rich.live import Live
@@ -9,6 +10,7 @@ import asyncio
 from loguru import logger
 from core import Coordinator
 
+
 class Entity:
     def __init__(self, prefix: str, console: Console):
         self.prefix = prefix
@@ -17,9 +19,11 @@ class Entity:
     def send_message(self, message: str):
         self.console.print(f"{self.prefix} {message}")
 
+
 class User(Entity):
     def __init__(self, console: Console):
         super().__init__(":man: [bold cyan]You:[/bold cyan]", console)
+
 
 class AI(Entity):
     def __init__(self, console: Console):
@@ -29,18 +33,24 @@ class AI(Entity):
         def create_spinner_panel(stream_message):
             text = f"Status: Generating\n{self.prefix} {stream_message}"
             spinner = Spinner("dots", text=text)
-            panel = Panel(spinner, 
-                          title="AI Generating Response",
-                          title_align="left",
-                          border_style="magenta")
+            panel = Panel(
+                spinner,
+                title="AI Generating Response",
+                title_align="left",
+                border_style="magenta",
+            )
             return panel
-        
-        def create_completed_panel(message:str):
-            completed_message = f"Status: [green]Completed![/green] \n {self.prefix} {message}"
-            panel = Panel(completed_message, 
-                          title="AI Generating Response", 
-                          title_align="left",
-                          border_style="magenta")
+
+        def create_completed_panel(message: str):
+            completed_message = (
+                f"Status: [green]Completed![/green] \n {self.prefix} {message}"
+            )
+            panel = Panel(
+                completed_message,
+                title="AI Generating Response",
+                title_align="left",
+                border_style="magenta",
+            )
             return panel
 
         typed_message = ""
@@ -49,11 +59,12 @@ class AI(Entity):
                 typed_message += char
                 live.update(create_spinner_panel(typed_message))
             live.update(create_completed_panel(typed_message))
-        
 
-class System(Entity):   
+
+class System(Entity):
     def __init__(self, console: Console):
         super().__init__(":gear: [bold green]System:[/bold green]", console)
+
 
 class CliApp:
     def __init__(self):
@@ -63,15 +74,19 @@ class CliApp:
         self.system = System(self.console)
         self.coordinator = Coordinator()
 
-
     def mainloop(self):
         self.system.send_message("Medical Multi Agent initialized")
-        self.system.send_message("Type '/file <file_path>' followed by a url to pass a file to the AI agent")
+        self.system.send_message(
+            "Type '/file <file_path>' followed by a url to pass a file to the AI agent",
+        )
         self.system.send_message("Type '/bye' to exit the program")
+
         async def prompt_loop():
             while True:
                 self.system.send_message("Enter your questions or comma/nds:")
-                message = input(">>> ").strip()  # Using plain input to get user input
+                message = input(
+                    ">>> ",
+                ).strip()  # Using plain input to get user input
                 self.console.rule()
                 self.user.send_message(message)
                 if re.search(r"/bye", message, re.IGNORECASE):
@@ -79,16 +94,24 @@ class CliApp:
                     self.system.send_message("Exiting the program")
                     break
                 else:
-                    if match := re.search(r"/file (\w+)", message, re.IGNORECASE):
+                    if match := re.search(
+                        r"/file (\w+)",
+                        message,
+                        re.IGNORECASE,
+                    ):
                         file_path = match.group(1).strip()
                         self.system.send_message(f"File path: {file_path}")
                         logger.info(f"User upload a file: {file_path}")
-                    message_generator = await self.coordinator.start_with(message)
+                    message_generator = await self.coordinator.start_with(
+                        message,
+                    )
                     await self.ai.send_stream_message(message_generator)
+
         asyncio.run(prompt_loop())
-    
+
     def run(self):
         self.mainloop()
+
 
 if __name__ == "__main__":
     CliApp().run()

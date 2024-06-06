@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from typing import TypedDict, List
 from langchain_core.runnables import Runnable
 from langchain_core.documents import Document
@@ -53,13 +54,12 @@ class WorkflowStorage:
                     instance = obj()
                     description = instance.description
                     runnable = instance.get_runnable()
-                    runnables.append(
-                        {
-                            "name": name,
-                            "description": description,
-                            "runnable": runnable,
-                        }
+                    workflow_record = WorkflowRecord(
+                        name=name,
+                        description=description,
+                        runnable=runnable,
                     )
+                    runnables.append(workflow_record)
         return runnables
 
     def _init_vectorstore(self) -> VectorStore:
@@ -72,7 +72,8 @@ class WorkflowStorage:
         ]
         logger.info("Creating vector store from documents")
         vectorstore = self.vector_store_cls.from_documents(
-            documents=documents, embedding=self.embeddings
+            documents=documents,
+            embedding=self.embeddings,
         )
         logger.info("Vector store created")
         return vectorstore
@@ -93,14 +94,14 @@ class WorkflowStorage:
                     "system",
                     """Following are the workflows available \n
                     {workflows}""",
-                )
-            ]
+                ),
+            ],
         )
         workflows_str = "\n".join(
             [
                 f"{idx + 1}. {record['name']}: {record['description']}"
                 for idx, record in enumerate(self.runnables)
-            ]
+            ],
         )
         prompt = prompt_template.format(workflows=workflows_str)
         return prompt
