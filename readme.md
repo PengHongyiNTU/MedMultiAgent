@@ -7,6 +7,7 @@ To create and activate the med-agent environment using Conda, follow these steps
 ```shell
 conda create --name med-agent --file spec-file.txt
 conda activate med-agent
+pip install -r requirement.txt
 ```
 
 
