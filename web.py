@@ -7,7 +7,7 @@ class WebApp:
     def __init__(self, port: int):
         self.port = port
 
-    def start(self):
+    def run(self):
         try:
             command = f"streamlit run st_app.py --server.port {self.port}"
             logger.info(f"Starting Web application on port {self.port}")
